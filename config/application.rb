@@ -18,5 +18,14 @@ module Projects
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.generators do |g|
+      g.test_framework :rspec,
+        fixtures: false, # テストデータベースへのレコード作成
+        view_specs: false, # ビュースペック作成
+        helper_specs: false, # ヘルパーファイル用スペック作成
+        routing_specs: false, # config/routes.rb用のスペックファイル作成
+      g.factory_bot false # factorybotのgenerator
+    end
   end
 end
