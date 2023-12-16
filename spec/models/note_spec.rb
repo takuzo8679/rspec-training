@@ -2,19 +2,35 @@ require 'rails_helper'
 
 RSpec.describe Note, type: :model do
   before do
-    user = User.create(
+    @user = User.create(
       first_name: 'Aron',
       last_name: 'Summer',
       email: 'tester@example.com',
       password: 'password'
     )
-    project = user.projects.create(name: 'Test Project')
-
-    @note1 = project.notes.create(message: 'This is the first note', user:)
-    @note2 = project.notes.create(message: 'This is the second note', user:)
-    @note3 = project.notes.create(message: 'First, preheate the oven', user:)
+    @project = @user.projects.create(name: 'Test Project')
   end
+  it 'is valid with a user, project, and message' do
+    note = Note.new(
+      message: 'This is a shimple note.',
+      user: @user,
+      project: @project
+    )
+    expect(note).to be_valid
+  end
+
+  it 'is invalid without a message' do
+    note = Note.new(message: nil)
+    note.valid?
+    expect(note.errors[:message]).to include("can't be blank")
+  end
+
   describe 'search message for a term' do
+    before do
+      @note1 = @project.notes.create(message: 'This is the first note', user: @user)
+      @note2 = @project.notes.create(message: 'This is the second note', user: @user)
+      @note3 = @project.notes.create(message: 'First, preheate the oven', user: @user)
+    end
     context 'when a match is found' do
       it 'returns notes that match the serach term' do
         expect(Note.search('first')).to include(@note1, @note3)
