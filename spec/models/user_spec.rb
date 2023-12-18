@@ -16,41 +16,28 @@ RSpec.describe User, type: :model do
   end
 
   it "is invalid without a first name" do
-    user = User.new(first_name: nil)
+    user = FactoryBot.build(:user, first_name: nil)
     user.valid?
     expect(user.errors[:first_name]).to include("can't be blank")
   end
   it "is invalid without a last name" do
-    user = User.new(last_name: nil)
+    user = FactoryBot.build(:user, last_name: nil)
     user.valid?
     expect(user.errors[:last_name]).to include("can't be blank")
   end
   it "is invalid without a email address" do
-    user = User.new(email: nil)
+    user = FactoryBot.build(:user, email: nil)
     user.valid?
     expect(user.errors[:email]).to include("can't be blank")
   end
   it "is invalid with a duplicate email address" do
-    User.create(
-      first_name: "Aron", 
-      last_name: "Summer", 
-      email: "tester@example.com", 
-      password: "password")
-    user = User.new(
-      first_name: "Aron", 
-      last_name: "Summer", 
-      email: "tester@example.com", 
-      password: "password")
+    FactoryBot.create(:user, email: 'tester@expample.com')
+    user = FactoryBot.build(:user, email: 'tester@expample.com')
     user.valid?
     expect(user.errors[:email]).to include("has already been taken")
   end
   it "returns a user's full name as a string" do
-    user = User.create(
-    first_name: "Aran",
-    last_name: "Last",
-    email: "test@example.com",
-    password: "password"
-    )
+    user = FactoryBot.build(:user, first_name: "Aran", last_name: "Last")
     expect(user.name).to eq "Aran Last"
   end
 end
