@@ -9,11 +9,7 @@ RSpec.describe Project, type: :model do
   describe 'create project' do
     before do
       # ユーザー作成
-      @user = User.create(
-      first_name: "Aron", 
-      last_name: "Summer", 
-      email: "tester@example.com", 
-      password: "password")
+      @user = FactoryBot.create(:user)
       @user.projects.create(name: "Test Project")
     end
     it "does not allow duplicate project names per user" do
@@ -23,11 +19,7 @@ RSpec.describe Project, type: :model do
       expect(new_project.errors[:name]).to include("has already been taken")
     end
     it "allows two users to share a project name" do
-      other_user = User.create(
-      first_name: "Aron2", 
-      last_name: "Summer2", 
-      email: "tester@example.com2", 
-      password: "password2")
+      other_user = FactoryBot.create(:user, email: "tester0@example.com" )
       ohter_project = other_user.projects.build(name:"Test Project")
       
       expect(ohter_project).to be_valid
