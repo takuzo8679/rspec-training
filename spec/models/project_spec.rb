@@ -46,7 +46,11 @@ RSpec.describe Project, type: :model do
       project = FactoryBot.create(:project, :due_tomorrow)
       expect(project).to_not be_late
     end
-    
+  end
+  # callbackテスト
+  it "can habe many notes" do
+    project = FactoryBot.create(:project, :with_notes)
+    expect(project.notes.length).to eq 5
   end
 end
   
