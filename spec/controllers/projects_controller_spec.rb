@@ -58,12 +58,23 @@ RSpec.describe ProjectsController, type: :controller do
         @user = FactoryBot.create(:user)
         sign_in @user
       end
-      it "adds a project" do
-        project_params = FactoryBot.attributes_for(:project)
-        # blockで渡す必要がる
-        expect {
-        post :create, params: { project: project_params }
-      }.to change(@user.projects, :count).by(1)
+      context "with valid attributes" do
+        it "adds a project" do
+          project_params = FactoryBot.attributes_for(:project)
+          # blockで渡す必要がる
+          expect {
+          post :create, params: { project: project_params }
+        }.to change(@user.projects, :count).by(1)
+        end
+      end
+      context "with invalid attributes" do
+        it "does not adds a project" do
+          project_params = FactoryBot.attributes_for(:project, :invalid)
+          # blockで渡す必要がる
+          expect {
+          post :create, params: { project: project_params }
+        }.to_not change(@user.projects, :count)
+        end
       end
     end
     context "as a guest" do
