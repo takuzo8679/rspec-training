@@ -8,7 +8,7 @@ RSpec.describe "Tasks", type: :system do
     task = project.tasks.create!(name: 'Finish Rspec tutorial')
     # テスト画面まで移動
     visit root_path
-    click_link "Sign In"
+    click_link "Sign in"
     fill_in 'Email', with: user.email
     fill_in 'Password', with: user.password
     click_button "Log in"
