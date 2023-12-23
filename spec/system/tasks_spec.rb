@@ -1,11 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Tasks", type: :system do
-  # JS使用時は外す
-  # before do
-  #   driven_by(:rack_test)
-  # end
-
   scenario "user toggle a task", js:true do
     # データ生成
     user = FactoryBot.create(:user)
