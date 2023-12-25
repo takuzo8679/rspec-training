@@ -1,17 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe "Tasks", type: :system do
+  include LoginSupport
   scenario "user toggle a task", js:true do
     # データ生成
     user = FactoryBot.create(:user)
     project = FactoryBot.create(:project, owner: user, name: "Scenario Task")
     task = project.tasks.create!(name: 'Finish Rspec tutorial')
     # テスト画面まで移動
-    visit root_path
-    click_link "Sign in"
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_button "Log in"
+    sign_in_as(user)
     click_link "Scenario Task"
     # テスト
     check "Finish Rspec tutorial"
