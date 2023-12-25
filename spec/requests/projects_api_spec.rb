@@ -18,4 +18,14 @@ RSpec.describe "Projects Api", type: :request do
     json = JSON.parse(response.body)
     expect(json['name']).to eq 'Second sample project'
   end
+
+  it 'create a project' do
+    user = FactoryBot.create(:user)
+    project_param = FactoryBot.attributes_for(:project)
+    expect {
+      post api_projects_path, params: {
+        user_email: user.email, user_token: user.authentication_token,
+        project: project_param }
+    }.to change(user.projects, :count).by(1)
+  end
 end
