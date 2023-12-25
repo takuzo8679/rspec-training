@@ -5,7 +5,9 @@ RSpec.describe "Projects", type: :system do
   include LoginSupport
   scenario "user creates a new project" do
     user = FactoryBot.create(:user)
-    sign_in_as(user)
+    sign_in user
+    # 本来ログイン後に遷移するはずの画面に移動
+    visit root_path
 
     expect {
       click_link "New Project"

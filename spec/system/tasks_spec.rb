@@ -7,8 +7,9 @@ RSpec.describe "Tasks", type: :system do
     user = FactoryBot.create(:user)
     project = FactoryBot.create(:project, owner: user, name: "Scenario Task")
     task = project.tasks.create!(name: 'Finish Rspec tutorial')
+    sign_in user
     # テスト画面まで移動
-    sign_in_as(user)
+    visit root_path
     click_link "Scenario Task"
     # テスト
     check "Finish Rspec tutorial"

@@ -66,4 +66,8 @@ RSpec.configure do |config|
 
   # リクエストスペックでDeviseのテストヘルパーを使用する
   config.include RequestSpecHelper, type: :request
+
+  # システムスペックでDeviseのテストヘルパーを使用する
+  config.include Devise::Test::IntegrationHelpers, type: :system
+
 end
