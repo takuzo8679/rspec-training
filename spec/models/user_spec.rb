@@ -36,8 +36,10 @@ RSpec.describe User, type: :model do
     user.valid?
     expect(user.errors[:email]).to include("has already been taken")
   end
-  it "returns a user's full name as a string" do
-    user = FactoryBot.build(:user, first_name: "Aran", last_name: "Last")
-    expect(user.name).to eq "Aran Last"
-  end
+  # it "returns a user's full name as a string" do
+  #   user = FactoryBot.build(:user, first_name: "Aran", last_name: "Last")
+  #   expect(user.name).to eq "Aran Last"
+  # end
+  subject(:user) { FactoryBot.build(:user, first_name: "Aran", last_name: "Last")}
+  it { is_expected.to satisfy { |user| user.name == "Aran Last" } }
 end
