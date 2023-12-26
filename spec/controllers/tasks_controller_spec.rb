@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe TasksController, type: :controller do
-  let(:user) { FactoryBot.create(:user) }
-  let(:project) { FactoryBot.create(:project, owner: user) }
-  let(:task) { project.tasks.create!(name: "Test task") }
+  # shared_contextの読み込み
+  include_context "project setup"
 
   describe "#show" do
     it "responds with json formatted output" do
