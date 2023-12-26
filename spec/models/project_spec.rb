@@ -12,18 +12,8 @@ RSpec.describe Project, type: :model do
       @user = FactoryBot.create(:user)
       @user.projects.create(name: "Test Project")
     end
-    it "does not allow duplicate project names per user" do
-      
-      new_project = @user.projects.build(name: "Test Project")
-      new_project.valid?
-      expect(new_project.errors[:name]).to include("has already been taken")
-    end
-    it "allows two users to share a project name" do
-      other_user = FactoryBot.create(:user, email: "tester0@example.com" )
-      ohter_project = other_user.projects.build(name:"Test Project")
-      
-      expect(ohter_project).to be_valid
-    end
+    it { is_expected.to validate_uniqueness_of(:name).scoped_to(:user_id) }
+
   end
   describe "late status" do
     it "is late when the due date is past today" do

@@ -70,4 +70,11 @@ RSpec.configure do |config|
   # システムスペックでDeviseのテストヘルパーを使用する
   config.include Devise::Test::IntegrationHelpers, type: :system
 
+  # Shoulda Matchersの使用宣言
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
+  end
 end
