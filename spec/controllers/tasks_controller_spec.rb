@@ -9,7 +9,8 @@ RSpec.describe TasksController, type: :controller do
       sign_in user
       get :show, format: :json,
         params: {project_id: project.id, id: task.id }
-      expect(response.content_type).to include "application/json"
+      # expect(response.content_type).to include "application/json"
+      expect(response).to have_content_type :json
     end
   end
   describe "#create" do
@@ -17,7 +18,7 @@ RSpec.describe TasksController, type: :controller do
       sign_in user
       post :create, format: :json,
         params: {project_id: project.id, task: {name: "Test task 2"} }
-      expect(response.content_type).to include "application/json"
+        expect(response).to have_content_type :json
     end
     it "adds a new task" do
       sign_in user
