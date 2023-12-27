@@ -56,4 +56,15 @@ RSpec.describe User, type: :model do
     # spyを使う。テストコードが実行された後に発生したことを検証する
     expect(UserMailer).to have_received(:welcome_email).with(user)
   end
+
+  # ジオコーディング
+  it "performs geocoding" do
+    user = FactoryBot.create(:user, last_sign_in_ip: '161.185.207.20')
+    # 実際に外部APIをたたいている
+    expect {
+      user.geocode
+    }.to change(user, :location)
+    .from(nil)
+    .to("New York City, New York, US")
+  end
 end
