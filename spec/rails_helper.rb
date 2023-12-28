@@ -63,4 +63,7 @@ RSpec.configure do |config|
   
   # コントローラスペックでDeviseのテストヘルパーを使用する
   config.include Devise::Test::ControllerHelpers, type: :controller
+
+  # リクエストスペックでDeviseのテストヘルパーを使用する
+  config.include RequestSpecHelper, type: :request
 end
