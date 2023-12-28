@@ -59,6 +59,8 @@ class ProjectsController < ApplicationController
   end
 
   def complete
+    @project.update!(completed: true)
+    redirect_to @project, notice: "Congratulations, this project is complete!"
   end
 
   private
