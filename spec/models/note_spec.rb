@@ -7,8 +7,8 @@ RSpec.describe Note, type: :model do
   it 'is valid with a user, project, and message' do
     note = Note.new(
       message: 'This is a shimple note.',
-      user: user,
-      project: project
+      user:,
+      project:
     )
     expect(note).to be_valid
   end
@@ -20,9 +20,9 @@ RSpec.describe Note, type: :model do
   end
 
   describe 'search message for a term' do
-    let(:note1) { FactoryBot.create(:note, project: project, user: user, message: 'This is the first note') }
-    let(:note2) { FactoryBot.create(:note, project: project, user: user, message: 'This is the second note') }
-    let(:note3) { FactoryBot.create(:note, project: project, user: user, message: 'First, preheate the oven') }
+    let(:note1) { FactoryBot.create(:note, project:, user:, message: 'This is the first note') }
+    let(:note2) { FactoryBot.create(:note, project:, user:, message: 'This is the second note') }
+    let(:note3) { FactoryBot.create(:note, project:, user:, message: 'First, preheate the oven') }
     context 'when a match is found' do
       it 'returns notes that match the serach term' do
         expect(Note.search('first')).to include(note1, note3)
@@ -36,14 +36,14 @@ RSpec.describe Note, type: :model do
     end
   end
 
-  it "delegates name to the user who created it" do
-    user = instance_double("User", name: "Fake User")
+  it 'delegates name to the user who created it' do
+    user = instance_double('User', name: 'Fake User')
     note = Note.new
     allow(note).to receive(:user).and_return(user)
-    expect(note.user_name).to eq "Fake User"
+    expect(note.user_name).to eq 'Fake User'
   end
 
-  it "has attachment" do
+  it 'has attachment' do
     note = FactoryBot.create(:note, :with_attachment)
     expect(note.attachment).to be_attached
   end
