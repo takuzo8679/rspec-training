@@ -34,8 +34,9 @@ RSpec.describe "Projects", type: :system do
     visit project_path(project)
     # 完了(complete)ボタンをクリックする
     click_button "Complete"
+    save_and_open_page
     # プロジェクトは完了済み(completed)としてマークされる
-    expect(project.reload.complete?).to be true
+    expect(project.reload.completed?).to be true
     expect(page).to have_content "Congratulations, this project is completed!"
     expect(page).to have_content "Completed"
     expect(page).to_not have_button "Complete"
