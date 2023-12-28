@@ -5,7 +5,7 @@
     Edit
   <% end %>
   <%= button_to complete_project_path(project),
-      method: patch,
+      method: :patch,
       form: { style: "display:inline-block;" },
       class: "btn btn-light btn-sm btn-inline" do %>
     <span class="bi bi-check-lg" aria-hidden="true"></span>
