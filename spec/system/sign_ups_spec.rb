@@ -1,12 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe "Sign-ups", type: :system do
+RSpec.describe "SignUps", type: :system do
   include ActiveJob::TestHelper
-
   scenario "user successfully signs up" do
     visit root_path
     click_link "Sign up"
 
+    # メールはバックグラウンドプロセスで送信される
+    # 同期実行するためにperform_enqueued_jobsを用いる
     perform_enqueued_jobs do
       expect {
         fill_in "First name", with: "First"
@@ -16,15 +17,12 @@ RSpec.describe "Sign-ups", type: :system do
         fill_in "Password confirmation", with: "test123"
         click_button "Sign up"
       }.to change(User, :count).by(1)
-
-      expect(page).to \
-        have_content "Welcome! You have signed up successfully."
-      expect(current_path).to eq root_path
-      expect(page).to have_content "First Last"
     end
-
+    expect(page).to have_content "Welcome! You have signed up successfully."
+    expect(current_path).to eq root_path
+    expect(page).to have_content "First Last"
+    
     mail = ActionMailer::Base.deliveries.last
-
     aggregate_failures do
       expect(mail.to).to eq ["test@example.com"]
       expect(mail.from).to eq ["support@example.com"]

@@ -47,4 +47,24 @@ RSpec.describe User, type: :model do
   # end
   subject(:user) { FactoryBot.build(:user, first_name: "Aran", last_name: "Last")}
   it { is_expected.to satisfy { |user| user.name == "Aran Last" } }
+
+  # MailTest
+  it "sends a welcome email on account creation" do
+    # stub化
+    allow(UserMailer).to receive_message_chain(:welcome_email, :deliver_later)
+    user = FactoryBot.create(:user)
+    # spyを使う。テストコードが実行された後に発生したことを検証する
+    expect(UserMailer).to have_received(:welcome_email).with(user)
+  end
+
+  # ジオコーディング
+  it "performs geocoding", vcr: true do
+    user = FactoryBot.create(:user, last_sign_in_ip: '161.185.207.20')
+    # 実際に外部APIをたたいている->vcrがmockしている
+    expect {
+      user.geocode
+    }.to change(user, :location)
+    .from(nil)
+    .to("New York City, New York, US")
+  end
 end
