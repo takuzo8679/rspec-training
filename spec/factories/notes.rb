@@ -1,11 +1,8 @@
 FactoryBot.define do
   factory :note do
     message { "My important note." }
-    association :project
-    user { project.owner }
-
-    trait :with_attachment do
-      attachment { Rack::Test::UploadedFile.new("#{Rails.root}/spec/files/attachment.jpg", 'image/jpeg') }
-    end
+    association :project # project作成時にuserが作成される
+    # association :user # この記載では二重でuserを作成してしまう
+    user { project.owner } # 上記のuserを関連付ける
   end
 end

@@ -9,11 +9,7 @@ RSpec.describe Project, type: :model do
   describe 'create project' do
     before do
       # ユーザー作成
-      @user = User.create(
-      first_name: "Aron", 
-      last_name: "Summer", 
-      email: "tester@example.com", 
-      password: "password")
+      @user = FactoryBot.create(:user)
       @user.projects.create(name: "Test Project")
     end
     it "does not allow duplicate project names per user" do
@@ -23,15 +19,30 @@ RSpec.describe Project, type: :model do
       expect(new_project.errors[:name]).to include("has already been taken")
     end
     it "allows two users to share a project name" do
-      other_user = User.create(
-      first_name: "Aron2", 
-      last_name: "Summer2", 
-      email: "tester@example.com2", 
-      password: "password2")
+      other_user = FactoryBot.create(:user, email: "tester0@example.com" )
       ohter_project = other_user.projects.build(name:"Test Project")
       
       expect(ohter_project).to be_valid
     end
+  end
+  describe "late status" do
+    it "is late when the due date is past today" do
+      project = FactoryBot.create(:project, :due_yesterday)
+      expect(project).to be_late
+    end
+    it "is on time when the due date is today" do
+      project = FactoryBot.create(:project, :due_today)
+      expect(project).to_not be_late
+    end
+    it "is on time when the due date is on ther futuer" do
+      project = FactoryBot.create(:project, :due_tomorrow)
+      expect(project).to_not be_late
+    end
+  end
+  # callbackテスト
+  it "can habe many notes" do
+    project = FactoryBot.create(:project, :with_notes)
+    expect(project.notes.length).to eq 5
   end
 end
   
