@@ -23,11 +23,21 @@ RSpec.describe "Projects", type: :system do
         expect(page).to have_content("Owner: #{user.name}")
       end
   end
-  # # デバッグ用save_pageの確認用テスト
-  # scenario "guest add a project" do
-  #   visit projects_path
-  #   save_page
-  #   save_and_open_page
-  #   click_link "New Project"
-  # end
+
+  scenario "user completes a project" do
+    # プロジェクトを持ったユーザーが必要でそのユーザーはログインしている
+    user = FactoryBot.create(:user)
+    project = FactoryBot.create(:project, owner: user)
+    sign_in user
+
+    # ユーザーはプロジェクト画面を開き
+    visit project_path(project)
+    # 完了(complete)ボタンをクリックする
+    click_button "Complete"
+    # プロジェクトは完了済み(completed)としてマークされる
+    expect(project.reload.complete?).to be true
+    expect(page).to have_content "Congratulations, this project is completed!"
+    expect(page).to have_content "Completed"
+    expect(page).to_not have_button "Complete"
+  end
 end
